@@ -96,7 +96,7 @@
   }
 
   /* object-fit:contain because each sprite frame is cropped tight to its
-     own pose (idle/standing frames are tall, run-cycle frames are wide) -
+     own pose (idle/standing frames are tall, posture frames differ too) -
      mouse.js swaps which frame this <img> points at. */
   .mouse-icon {
     position: absolute;
@@ -105,41 +105,13 @@
     object-fit: contain;
     opacity: 1;
   }
-  /* Position/fade only - which sprite frame is showing is mouse.js's job
-     (driven by the same hover, via mouseenter/mouseleave), timed to this
-     animation's 1.2s so the turn+run frame sequence and the movement
-     finish together. */
-  .center:hover .mouse-icon {
-    animation: scurry 1.2s ease-in forwards;
-  }
-  @keyframes scurry {
-    0%   { transform: translate(0, 0); opacity: 1; }
-    22%  { transform: translate(8%, 0); opacity: 1; }
-    100% { transform: translate(280%, 12%); opacity: 0; }
-  }
 
-  /* Sized independently of .center (the small 19vmin mouse hotspot) -
-     "the center" here means the actual open hole in the middle of the
-     ring: tiles orbit at 36vmin radius with a 6.75vmin half-size, so
-     their inner edge is at 29.25vmin (58.5vmin diameter). 48vmin is
-     ~82% of that - within the requested 70-90%, with ~5vmin of
-     clearance before it'd touch the tiles. Centered on the same point
-     as .center via top/left/transform, independent of .center's own
-     (smaller) box size. */
-  .center-strike {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 48vmin; height: 48vmin;
-    transform: translate(-50%, -50%);
-    object-fit: contain; /* full head visible, not cropped into the jaw */
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.35s ease 1.1s; /* fires as the mouse's escape sequence (1.2s) finishes */
-    box-shadow: 0 0 24px rgba(0,0,0,0.7);
-  }
-  .center:hover .center-strike {
-    opacity: 1;
-  }
+  /* Scurry/escape-on-hover behavior removed 2026-09-20 pending new specs -
+     the first-pass version (turn_r_1-4->turn_right at 65ms, then
+     scurry_r_a/contact/b at 70ms x3, this .center-strike reveal on a 1.2s/
+     1.1s timings) worked well and is preserved in git history (see commit
+     ebcd6be) plus a memory note - not deleted, just not wired up right now.
+     strike.png stays in images/ for when this comes back. */
 
   /* Light source: a fixed radial glow in screen space (does NOT spin
      with .ring), so tiles visibly brighten as their orbit carries them
@@ -255,7 +227,6 @@
 
   <div class="center">
     <img class="mouse-icon" id="mouse-icon" src="images/mouse/idle.png" alt="" />
-    <img class="center-strike" src="images/strike.png" alt="" />
   </div>
 
   <div class="light-overlay"></div>
