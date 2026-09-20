@@ -5,44 +5,28 @@
   if (!img) return;
 
   var BASE = "images/mouse/";
-  var FRAME_MS = 400;
-  var IDLE_HOLD_MS = 1500;
+  var MID_MS = 300;
+  var OTHER_MS = 600;
 
-  // Behavior 2, "posturing sequence" (one unit): backward, then forward,
-  // named exactly as specced - no de-duplication of the shared middle
-  // frame at the junction.
-  var POSTURE_BACKWARD = ["posture_up.png", "posture_up_mid.png"];
-  var POSTURE_FORWARD = ["posture_up_mid.png", "posture_up.png"];
+  var SEQUENCE = [
+    { frame: "idle.png", ms: OTHER_MS },
+    { frame: "posture_down_mid.png", ms: MID_MS },
+    { frame: "posture_down.png", ms: OTHER_MS },
+    { frame: "posture_down_mid.png", ms: MID_MS },
+    { frame: "idle.png", ms: OTHER_MS },
+  ];
 
   function setFrame(name) {
     img.src = BASE + name;
   }
 
-  function playSequence(frames, interval, onDone) {
-    var i = 0;
-    setFrame(frames[0]);
-    var t = setInterval(function () {
-      i++;
-      if (i >= frames.length) {
-        clearInterval(t);
-        onDone();
-        return;
-      }
-      setFrame(frames[i]);
-    }, interval);
+  function step(i) {
+    var entry = SEQUENCE[i % SEQUENCE.length];
+    setFrame(entry.frame);
+    setTimeout(function () {
+      step(i + 1);
+    }, entry.ms);
   }
 
-  // Behavior 1 (idle) -> behavior 2 (posturing sequence) -> idle, held
-  // 1500ms -> loop.
-  function runCycle() {
-    playSequence(POSTURE_BACKWARD, FRAME_MS, function () {
-      playSequence(POSTURE_FORWARD, FRAME_MS, function () {
-        setFrame("idle.png");
-        setTimeout(runCycle, IDLE_HOLD_MS);
-      });
-    });
-  }
-
-  setFrame("idle.png");
-  setTimeout(runCycle, IDLE_HOLD_MS);
+  step(0);
 })();
