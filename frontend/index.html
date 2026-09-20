@@ -110,10 +110,19 @@
     100% { transform: translate(230%, -95%) rotate(-25deg); opacity: 0; }
   }
 
+  /* Sized independently of .center (the small 19vmin mouse hotspot) -
+     "the center" here means the actual open hole in the middle of the
+     ring: tiles orbit at 36vmin radius with a 6.75vmin half-size, so
+     their inner edge is at 29.25vmin (58.5vmin diameter). 48vmin is
+     ~82% of that - within the requested 70-90%, with ~5vmin of
+     clearance before it'd touch the tiles. Centered on the same point
+     as .center via top/left/transform, independent of .center's own
+     (smaller) box size. */
   .center-strike {
     position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
+    top: 50%; left: 50%;
+    width: 48vmin; height: 48vmin;
+    transform: translate(-50%, -50%);
     object-fit: contain; /* full head visible, not cropped into the jaw */
     border-radius: 50%;
     opacity: 0;
