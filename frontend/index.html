@@ -110,7 +110,7 @@
      animation's 1.2s so the turn+run frame sequence and the movement
      finish together. */
   .center:hover .mouse-icon {
-    animation: scurry 1.2s ease-in forwards;
+    animation: scurry 1.9s ease-in forwards;
   }
   @keyframes scurry {
     0%   { transform: translate(0, 0); opacity: 1; }
@@ -134,7 +134,7 @@
     object-fit: contain; /* full head visible, not cropped into the jaw */
     border-radius: 50%;
     opacity: 0;
-    transition: opacity 0.35s ease 1.1s; /* fires as the mouse's escape sequence (1.2s) finishes */
+    transition: opacity 0.35s ease 1.75s; /* fires as the mouse's escape sequence (~1.87s) finishes */
     box-shadow: 0 0 24px rgba(0,0,0,0.7);
   }
   .center:hover .center-strike {
