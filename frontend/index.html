@@ -23,12 +23,15 @@
 
     /* Light field geometry - adjust these to move/resize/strengthen the
        light source. x/y are position within the stage box (0% 0% = top-
-       left corner, 50% 50% = dead center). radius is how far the light
-       reaches before fully fading to nothing, as a % used by the radial
-       gradient below. intensity is peak brightness at the source, 0-1. */
+       left corner, 50% 50% = dead center). spread is how far the light
+       reaches before fading to nothing, as a % of the distance from the
+       source to the stage's farthest corner - past that point it's
+       already fully transparent, so there's no edge to reveal no matter
+       how far spread is below 100%. intensity is peak brightness at the
+       source, 0-1. */
     --light-x: 12%;
-    --light-y: 12%;
-    --light-radius: 42%;
+    --light-y: 10%;
+    --light-spread: 58%;
     --light-intensity: 0.5;
   }
 
@@ -118,9 +121,10 @@
      with .ring), so tiles visibly brighten as their orbit carries them
      through it and dim again as they move away - "passing through the
      light stream." mix-blend-mode: screen only ever adds brightness
-     (never darkens), which is what a real light source does; it also
-     means differences in the tiles' own base tone come through less
-     harshly once everything's under a shared wash of light. Geometry
+     (never darkens). Sized to farthest-corner with several eased stops,
+     fully transparent well before 100% (see --light-spread above), so
+     the falloff is always gradual and there is no point anywhere in the
+     frame where the light visibly "ends" - no edge, no ring. Geometry
      is the --light-* custom properties on .stage above - tune those,
      not this block, to move/resize/strengthen the light. */
   .light-overlay {
@@ -129,9 +133,11 @@
     pointer-events: none;
     z-index: 10;
     background: radial-gradient(
-      circle at var(--light-x) var(--light-y),
+      circle farthest-corner at var(--light-x) var(--light-y),
       rgba(255, 255, 255, var(--light-intensity)) 0%,
-      rgba(255, 255, 255, 0) var(--light-radius)
+      rgba(255, 255, 255, calc(var(--light-intensity) * 0.45)) calc(var(--light-spread) * 0.35),
+      rgba(255, 255, 255, calc(var(--light-intensity) * 0.12)) calc(var(--light-spread) * 0.7),
+      rgba(255, 255, 255, 0) var(--light-spread)
     );
     mix-blend-mode: screen;
   }
