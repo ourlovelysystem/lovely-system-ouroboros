@@ -5,7 +5,7 @@
   if (!img) return;
 
   var BASE = "images/mouse/";
-  var TICK_MS = 200;
+  var TICK_MS = 1000;
 
   // First animation: idle, posture up, posture down - no mid frames yet.
   // Hold 3 ticks at top (posture_up) and 3 ticks at bottom (posture_down).
