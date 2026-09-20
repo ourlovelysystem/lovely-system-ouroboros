@@ -89,21 +89,34 @@
 
   /* Center hotspot: fixed position/size, doesn't move or spin -
      only its contents animate, so hover detection stays put. */
+  /* Canvas sized to the exact native aspect ratio of the largest frame
+     (posture_up.png, 900x2133px - simultaneously the widest and tallest
+     of the 5 active frames), height picked to roughly match the old
+     19vmin footprint, width derived to preserve that exact ratio
+     (19 * 900/2133 = 8.02vmin). This is NOT object-fit:contain's job
+     anymore - see .mouse-icon below. */
   .center {
     position: absolute;
     top: 50%; left: 50%;
-    width: 19vmin; height: 19vmin;
-    margin: -9.5vmin 0 0 -9.5vmin;
+    width: 8.02vmin; height: 19vmin;
+    margin: -9.5vmin 0 0 -4.01vmin;
   }
 
-  /* object-fit:contain because each sprite frame is cropped tight to its
-     own pose (idle/standing frames are tall, posture frames differ too) -
-     mouse.js swaps which frame this <img> points at. */
+  /* No object-fit, no forced 100%/100% - each frame is deliberately NOT
+     independently scaled to fill the box (that was the bug: object-fit:
+     contain rescales each image based on ITS OWN aspect ratio, so frames
+     cropped with different amounts of margin around the mouse ended up
+     at different apparent sizes). Instead: centered on the canvas via
+     transform, height:auto so it follows the image's own intrinsic
+     ratio, and width set by mouse.js per frame as a % of the canvas
+     equal to that frame's native width / 900px (the canvas-defining
+     frame's native width) - i.e. every frame renders at the SAME true
+     scale relative to the others, just centered, exactly per spec. */
   .mouse-icon {
     position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    object-fit: contain;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
     opacity: 1;
   }
 
