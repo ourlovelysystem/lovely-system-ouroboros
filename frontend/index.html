@@ -117,11 +117,12 @@
   /* Light source: a radial glow FIXED TO THE VIEWPORT (not .stage, and
      not spinning with .ring) - position:fixed means its 0%/100% points
      are the actual viewport corners regardless of the stage's own size
-     or centering. Tiles visibly brighten as their orbit carries them
-     through it and dim again as they move away. mix-blend-mode: screen
-     only ever adds brightness (never darkens). Several eased stops for a
-     gradual falloff all the way to the far corner (--light-spread: 100%
-     above) - no edge, no ring, anywhere in the frame. */
+     or centering. No mix-blend-mode: normal alpha compositing, so this
+     paints as a visible translucent white layer sitting in front of the
+     ring, not an invisible brightness trick blended into it. Several
+     eased stops for a gradual falloff all the way to the far corner
+     (--light-spread: 100% above) - no edge, no ring, anywhere in the
+     frame. */
   .light-overlay {
     position: fixed;
     inset: 0;
@@ -134,7 +135,6 @@
       rgba(255, 255, 255, calc(var(--light-intensity) * 0.12)) calc(var(--light-spread) * 0.7),
       rgba(255, 255, 255, 0) var(--light-spread)
     );
-    mix-blend-mode: screen;
   }
 
   @media (prefers-reduced-motion: reduce) {
