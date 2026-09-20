@@ -5,17 +5,15 @@
   if (!img) return;
 
   var BASE = "images/mouse/";
-  var TICK_MS = 1000;
+  var MID_MS = 300;
+  var OTHER_MS = 600;
 
   var SEQUENCE = [
-    "idle.png",
-    "posture_up_mid.png",
-    "posture_up.png",
-    "posture_up_mid.png",
-    "posture_down_mid.png",
-    "posture_down.png",
-    "posture_down_mid.png",
-    "idle.png",
+    { frame: "idle.png", ms: OTHER_MS },
+    { frame: "posture_down_mid.png", ms: MID_MS },
+    { frame: "posture_down.png", ms: OTHER_MS },
+    { frame: "posture_down_mid.png", ms: MID_MS },
+    { frame: "idle.png", ms: OTHER_MS },
   ];
 
   function setFrame(name) {
@@ -23,10 +21,11 @@
   }
 
   function step(i) {
-    setFrame(SEQUENCE[i % SEQUENCE.length]);
+    var entry = SEQUENCE[i % SEQUENCE.length];
+    setFrame(entry.frame);
     setTimeout(function () {
       step(i + 1);
-    }, TICK_MS);
+    }, entry.ms);
   }
 
   step(0);
