@@ -16,23 +16,24 @@
     font-family: Georgia, 'Times New Roman', serif;
   }
 
+  :root {
+    /* Light field geometry. x/y are position within the VIEWPORT (0% 0% =
+       absolute upper-left corner). spread is how far the light reaches
+       before fading to nothing, as a % of the distance from the source to
+       the viewport's farthest corner - at 100%, with x/y at 0% 0%, that
+       farthest corner is exactly the absolute lower-right of the
+       viewport, so the light spans corner to corner. intensity is peak
+       brightness at the source, 0-1. */
+    --light-x: 0%;
+    --light-y: 0%;
+    --light-spread: 100%;
+    --light-intensity: 0.5;
+  }
+
   .stage {
     position: relative;
     width: 98vmin;
     height: 98vmin;
-
-    /* Light field geometry - adjust these to move/resize/strengthen the
-       light source. x/y are position within the stage box (0% 0% = top-
-       left corner, 50% 50% = dead center). spread is how far the light
-       reaches before fading to nothing, as a % of the distance from the
-       source to the stage's farthest corner - past that point it's
-       already fully transparent, so there's no edge to reveal no matter
-       how far spread is below 100%. intensity is peak brightness at the
-       source, 0-1. */
-    --light-x: 12%;
-    --light-y: 10%;
-    --light-spread: 58%;
-    --light-intensity: 0.5;
   }
 
   /* The ring itself spins continuously. */
@@ -113,18 +114,16 @@
      ebcd6be) plus a memory note - not deleted, just not wired up right now.
      strike.png stays in images/ for when this comes back. */
 
-  /* Light source: a fixed radial glow in screen space (does NOT spin
-     with .ring), so tiles visibly brighten as their orbit carries them
-     through it and dim again as they move away - "passing through the
-     light stream." mix-blend-mode: screen only ever adds brightness
-     (never darkens). Sized to farthest-corner with several eased stops,
-     fully transparent well before 100% (see --light-spread above), so
-     the falloff is always gradual and there is no point anywhere in the
-     frame where the light visibly "ends" - no edge, no ring. Geometry
-     is the --light-* custom properties on .stage above - tune those,
-     not this block, to move/resize/strengthen the light. */
+  /* Light source: a radial glow FIXED TO THE VIEWPORT (not .stage, and
+     not spinning with .ring) - position:fixed means its 0%/100% points
+     are the actual viewport corners regardless of the stage's own size
+     or centering. Tiles visibly brighten as their orbit carries them
+     through it and dim again as they move away. mix-blend-mode: screen
+     only ever adds brightness (never darkens). Several eased stops for a
+     gradual falloff all the way to the far corner (--light-spread: 100%
+     above) - no edge, no ring, anywhere in the frame. */
   .light-overlay {
-    position: absolute;
+    position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 10;
@@ -137,24 +136,6 @@
     );
     mix-blend-mode: screen;
   }
-
-  /* The actual fixture: a lamp on a post, so the glow above reads as
-     light coming FROM something, not just an unexplained bright patch.
-     Positioned via the same --light-x/--light-y as the glow (translate
-     shifts by the bulb's own fractional position within this element's
-     box, so the bulb - not the element's corner - lands exactly on that
-     point) - move the light source by editing those two variables only,
-     the post/bracket/bulb all move together. */
-  .street-lamp {
-    position: absolute;
-    left: var(--light-x);
-    top: var(--light-y);
-    width: 26vmin;
-    transform: translate(-68%, -72%);
-    z-index: 11;
-    pointer-events: none;
-  }
-  .street-lamp svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
   @media (prefers-reduced-motion: reduce) {
     .ring { animation: none; }
@@ -228,32 +209,9 @@
   <div class="center">
     <img class="mouse-icon" id="mouse-icon" src="images/mouse/idle.png" alt="" />
   </div>
-
-  <div class="light-overlay"></div>
-
-  <div class="street-lamp">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="bulbGlow" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="3.2" />
-        </filter>
-      </defs>
-      <!-- post, entering from the corner off-frame -->
-      <line x1="-10" y1="-10" x2="35" y2="38" stroke="#15100c" stroke-width="4.5" stroke-linecap="round" />
-      <!-- curved bracket arm out to the hanging lamp -->
-      <path d="M35 38 Q54 28 68 50" fill="none" stroke="#15100c" stroke-width="4" stroke-linecap="round" />
-      <line x1="68" y1="50" x2="68" y2="59" stroke="#15100c" stroke-width="3" />
-      <circle cx="68" cy="57" r="3" fill="#15100c" />
-      <!-- lantern cage -->
-      <polygon points="55,60 81,60 88,72 81,84 55,84 48,72" fill="#0f0b08" stroke="#4a3620" stroke-width="1.5" />
-      <line x1="61.3" y1="60" x2="61.3" y2="84" stroke="#4a3620" stroke-width="1" />
-      <line x1="74.7" y1="60" x2="74.7" y2="84" stroke="#4a3620" stroke-width="1" />
-      <!-- the bulb: this point is what --light-x/--light-y aligns to -->
-      <circle cx="68" cy="72" r="10" fill="#fff3cf" filter="url(#bulbGlow)" />
-      <circle cx="68" cy="72" r="5.5" fill="#fffdf4" />
-    </svg>
-  </div>
 </div>
+
+<div class="light-overlay"></div>
 
 <script src="mouse.js"></script>
 </body>
