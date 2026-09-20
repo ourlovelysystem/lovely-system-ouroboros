@@ -18,8 +18,18 @@
 
   .stage {
     position: relative;
-    width: 92vmin;
-    height: 92vmin;
+    width: 98vmin;
+    height: 98vmin;
+
+    /* Light field geometry - adjust these to move/resize/strengthen the
+       light source. x/y are position within the stage box (0% 0% = top-
+       left corner, 50% 50% = dead center). radius is how far the light
+       reaches before fully fading to nothing, as a % used by the radial
+       gradient below. intensity is peak brightness at the source, 0-1. */
+    --light-x: 12%;
+    --light-y: 12%;
+    --light-radius: 75%;
+    --light-intensity: 0.9;
   }
 
   /* The ring itself spins continuously. */
@@ -37,20 +47,26 @@
   .tile {
     position: absolute;
     top: 50%; left: 50%;
-    width: 11vmin;
-    margin: -8.2vmin 0 0 -5.5vmin; /* half tile size, tile aspect ~420:625 */
+    width: 13.5vmin;
+    margin: -6.75vmin 0 0 -6.75vmin; /* half tile size - tile-face is a fixed square */
   }
 
+  /* Fixed square box, independent of any one image's native aspect
+     ratio - the letter crops (from most.jpg) and strike.jpg aren't the
+     same shape, and object-fit:cover on both means swapping between
+     them on hover never resizes the tile. */
   .tile-face {
     position: relative;
     width: 100%;
+    aspect-ratio: 1 / 1;
   }
 
   .tile-img {
     position: absolute;
-    top: 0; left: 0;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     border-radius: 8%;
     box-shadow: 0 6px 18px rgba(0,0,0,0.65);
     display: block;
@@ -65,8 +81,8 @@
   .center {
     position: absolute;
     top: 50%; left: 50%;
-    width: 16vmin; height: 16vmin;
-    margin: -8vmin 0 0 -8vmin;
+    width: 19vmin; height: 19vmin;
+    margin: -9.5vmin 0 0 -9.5vmin;
   }
 
   .mouse-icon {
@@ -98,6 +114,28 @@
     opacity: 1;
   }
 
+  /* Light source: a fixed radial glow in screen space (does NOT spin
+     with .ring), so tiles visibly brighten as their orbit carries them
+     through it and dim again as they move away - "passing through the
+     light stream." mix-blend-mode: screen only ever adds brightness
+     (never darkens), which is what a real light source does; it also
+     means differences in the tiles' own base tone come through less
+     harshly once everything's under a shared wash of light. Geometry
+     is the --light-* custom properties on .stage above - tune those,
+     not this block, to move/resize/strengthen the light. */
+  .light-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    background: radial-gradient(
+      circle at var(--light-x) var(--light-y),
+      rgba(255, 255, 255, var(--light-intensity)) 0%,
+      rgba(255, 255, 255, 0) var(--light-radius)
+    );
+    mix-blend-mode: screen;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ring { animation: none; }
   }
@@ -111,55 +149,55 @@
          live position angle (ring spin + fixed slot angle), like text
          printed radially on a real spinning disc. Upright at the 0deg
          (top) position, inverted at 180deg (bottom), by construction. -->
-    <div class="tile" style="transform: rotate(0deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(0deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/o.jpg" alt="O" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(40deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(40deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/u.jpg" alt="U" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(80deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(80deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/r.jpg" alt="R" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(120deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(120deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/o.jpg" alt="O" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(160deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(160deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/b.jpg" alt="B" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(200deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(200deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/o.jpg" alt="O" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(240deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(240deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/r.jpg" alt="R" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(280deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(280deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/o.jpg" alt="O" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
       </div>
     </div>
-    <div class="tile" style="transform: rotate(320deg) translateY(-33vmin);">
+    <div class="tile" style="transform: rotate(320deg) translateY(-36vmin);">
       <div class="tile-face">
         <img class="tile-img tile-letter" src="images/s.jpg" alt="S" />
         <img class="tile-img tile-strike" src="images/strike.jpg" alt="" />
@@ -181,6 +219,8 @@
     </svg>
     <img class="center-strike" src="images/strike.jpg" alt="" />
   </div>
+
+  <div class="light-overlay"></div>
 </div>
 
 </body>
