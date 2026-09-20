@@ -7,12 +7,15 @@
   var BASE = "images/mouse/";
   var TICK_MS = 1000;
 
-  // First animation: idle, posture up, posture down - no mid frames yet.
-  // Hold 3 ticks at top (posture_up) and 3 ticks at bottom (posture_down).
   var SEQUENCE = [
     "idle.png",
-    "posture_up.png", "posture_up.png", "posture_up.png",
-    "posture_down.png", "posture_down.png", "posture_down.png",
+    "posture_up_mid.png",
+    "posture_up.png",
+    "posture_up_mid.png",
+    "posture_down_mid.png",
+    "posture_down.png",
+    "posture_down_mid.png",
+    "idle.png",
   ];
 
   function setFrame(name) {
