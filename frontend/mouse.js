@@ -39,15 +39,15 @@
     .concat(rep("idle.png", IDLE_HOLD))
     .concat(POSTURE_UP_BACK_THEN_FWD)
     .concat(rep("idle.png", IDLE_HOLD));
-  var IDLE_INTERVAL = 150; // ~6.7fps, was 90 (~11fps) - too fast
+  var IDLE_INTERVAL = 90;
 
   // Escape sequence (on hover): turn to face right, then a run cycle
   // repeated a few times - timed to match the 1.2s `scurry` CSS animation
   // that handles the actual on-screen movement/fade (see index.html).
   var ESCAPE_TURN_FRAMES = ["turn_r_1.png", "turn_r_2.png", "turn_r_3.png", "turn_r_4.png", "turn_right.png"];
-  var ESCAPE_TURN_INTERVAL = 110; // was 65
+  var ESCAPE_TURN_INTERVAL = 65;
   var SCURRY_FRAMES = ["scurry_r_a.png", "scurry_r_contact.png", "scurry_r_b.png", "scurry_r_contact.png"];
-  var SCURRY_INTERVAL = 110; // was 70
+  var SCURRY_INTERVAL = 70;
   var SCURRY_REPEATS = 3;
 
   var idleTimer = null;
