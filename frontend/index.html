@@ -75,7 +75,14 @@
     display: block;
     transition: opacity 0.2s ease;
   }
-  .tile-strike { opacity: 0; }
+  .tile-strike {
+    opacity: 0;
+    /* Letter tiles use cover (from .tile-img) to fill the square cleanly,
+       but the strike photo is a portrait head shot - cover crops its top
+       and bottom to fill a square, cutting into the jaw. contain shows
+       the whole head, letterboxed on transparent, never cropped. */
+    object-fit: contain;
+  }
   .tile:hover .tile-letter { opacity: 0; }
   .tile:hover .tile-strike { opacity: 1; }
 
@@ -107,7 +114,7 @@
     position: absolute;
     inset: 0;
     width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* full head visible, not cropped into the jaw */
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.35s ease 0.55s;
