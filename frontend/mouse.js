@@ -5,7 +5,7 @@
   if (!img) return;
 
   var BASE = "images/mouse/";
-  var TICK_MS = 300;
+  var TICK_MS = 100;
 
   var SEQUENCE = [
     "idle.png",
