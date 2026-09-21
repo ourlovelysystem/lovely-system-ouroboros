@@ -84,8 +84,15 @@
        the whole head, letterboxed on transparent, never cropped. */
     object-fit: contain;
   }
-  .tile:hover .tile-letter { opacity: 0; }
-  .tile:hover .tile-strike { opacity: 1; }
+  /* Not CSS :hover: the ring moves tiles via transform animation, and
+     :hover only recomputes on real pointer events - a tile rotating out
+     from under a stationary pointer never fires one, so it would stay
+     stuck. ring-hover.js tracks pointer position and checks each tile's
+     live getBoundingClientRect() every animation frame instead, toggling
+     this class - correct regardless of whether the tile or the pointer
+     is what moved. */
+  .tile.is-struck .tile-letter { opacity: 0; }
+  .tile.is-struck .tile-strike { opacity: 1; }
 
   /* Center hotspot: fixed position/size, doesn't move or spin -
      only its contents animate, so hover detection stays put. */
@@ -213,5 +220,6 @@
 
 <div class="light-overlay"></div>
 
+<script src="ring-hover.js"></script>
 </body>
 </html>
