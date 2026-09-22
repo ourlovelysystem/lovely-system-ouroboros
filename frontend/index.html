@@ -210,6 +210,25 @@
     transition: opacity 4s ease-in;
   }
   .blackout.active { opacity: 1; }
+
+  /* Tunnel sequence, driven by tunnel.js: fills the viewport (the user
+     is fully in darkness by the time this starts), one frame at a time.
+     opacity and transform each get their own 3s transition, so JS can
+     just set target values - fade-in, the click-triggered expand, and
+     fade-out all reuse the same declared durations without needing to
+     rewrite the transition property per phase. */
+  .tunnel-img {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    transform: scale(1);
+    transition: opacity 3s ease, transform 3s ease-in;
+  }
 </style>
 </head>
 <body>
@@ -288,9 +307,12 @@
 
 <div class="blackout"></div>
 
+<img class="tunnel-img" alt="" />
+
 <script src="ring-hover.js"></script>
 <script src="diag.js"></script>
 <script src="pointer.js"></script>
 <script src="center-click.js"></script>
+<script src="tunnel.js"></script>
 </body>
 </html>

@@ -29,7 +29,10 @@
   el.src = frameSrc(1);
   document.body.appendChild(el);
 
+  var enveloped = false;
+
   document.addEventListener("mousemove", function (e) {
+    if (enveloped) return;
     el.style.opacity = "1";
     el.style.transform =
       "translate(" + e.clientX + "px, " + e.clientY + "px) " +
@@ -37,6 +40,15 @@
   });
   document.documentElement.addEventListener("mouseleave", function () {
     el.style.opacity = "0";
+  });
+
+  // Once the user is enveloped in darkness, the custom pointer reverts
+  // to normal - the wiggling hand is part of the ring/hole interaction,
+  // not the tunnel sequence that follows.
+  document.addEventListener("enveloped", function () {
+    enveloped = true;
+    el.style.opacity = "0";
+    document.body.style.cursor = "auto";
   });
 
   var frame = 1;
