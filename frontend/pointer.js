@@ -51,6 +51,13 @@
     document.body.style.cursor = "auto";
   });
 
+  // Returning to the landing page (end of the tunnel sequence) restores
+  // the custom pointer.
+  document.addEventListener("returned", function () {
+    enveloped = false;
+    document.body.style.cursor = "none";
+  });
+
   var frame = 1;
   function tick() {
     frame = (frame % FRAME_COUNT) + 1;

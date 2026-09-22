@@ -15,22 +15,24 @@
     "images/tunnel/tunnel_06.png",
     "images/tunnel/tunnel_07.png",
   ];
-  // Each frame's own light-source position (measured per frame - it
-  // drifts, mostly vertically, as the sequence gets closer), as a raw
+  // Each frame's own light-source position - the bright core specifically,
+  // not the halo or the lit tunnel walls around it (checked against a
+  // marked overlay of every frame, not just measured blind). As a raw
   // fraction (0-1) of the source image's own width/height.
   var LIGHT_FRAC = [
     [0.506, 0.481],
     [0.475, 0.534],
-    [0.496, 0.478],
-    [0.504, 0.458],
-    [0.512, 0.372],
-    [0.515, 0.426],
-    [0.521, 0.421],
+    [0.497, 0.478],
+    [0.503, 0.457],
+    [0.500, 0.336],
+    [0.517, 0.336],
+    [0.500, 0.440],
   ];
   var IMG_W = 784;
   var IMG_H = 1168;
   var EXPAND_SCALE = 1.6;
-  var STEP_MS = 3000;
+  var EXPAND_MS = 3000;
+  var FADE_MS = 1000;
 
   var imgs = [imgA, imgB];
   var cur = 0;
@@ -72,7 +74,26 @@
     // re-enabled, otherwise the browser can skip straight to the end
     // state instead of animating from it.
     void img.offsetWidth;
-    img.style.transition = "opacity 3s ease, transform 3s ease-in";
+    img.style.transition = "opacity " + FADE_MS + "ms ease, transform " + EXPAND_MS + "ms ease-in";
+  }
+
+  function returnToLanding(curImg) {
+    curImg.style.opacity = "0";
+
+    setTimeout(function () {
+      [imgA, imgB].forEach(function (img) {
+        img.style.transition = "none";
+        img.style.opacity = "0";
+        img.style.transform = "scale(1)";
+      });
+
+      var strike = document.querySelector(".center-strike");
+      var blackout = document.querySelector(".blackout");
+      if (strike) strike.classList.remove("growing");
+      if (blackout) blackout.classList.remove("active");
+
+      document.dispatchEvent(new CustomEvent("returned"));
+    }, FADE_MS);
   }
 
   function onClick() {
@@ -91,7 +112,12 @@
     curImg.style.transform = "scale(" + EXPAND_SCALE + ")";
 
     setTimeout(function () {
-      if (!hasNext) return; // last frame: stays expanded, sequence ends
+      if (!hasNext) {
+        // Last frame: instead of dead-ending, return to the landing page -
+        // the ring/tunnel is meant to be a full Ouroboros loop.
+        returnToLanding(curImg);
+        return;
+      }
 
       index++;
       // Crossfade: fade out the current frame and fade in the next one
@@ -105,8 +131,8 @@
       setTimeout(function () {
         hotspot.classList.add("active");
         hotspot.addEventListener("click", onClick);
-      }, STEP_MS);
-    }, STEP_MS);
+      }, FADE_MS);
+    }, EXPAND_MS);
   }
 
   document.addEventListener("enveloped", function () {
