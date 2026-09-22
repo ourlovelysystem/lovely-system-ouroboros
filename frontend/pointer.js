@@ -2,7 +2,7 @@
   "use strict";
 
   var FRAME_COUNT = 12;
-  var TICK_MS = 80;
+  var TICK_MS = 167;
   var BASE = "images/pointer/frame_";
 
   // Hotspot: the hand's pinch point, in display-size (65x96) pixels -
