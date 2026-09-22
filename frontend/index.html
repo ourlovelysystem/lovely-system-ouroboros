@@ -213,10 +213,10 @@
 
   /* Tunnel sequence, driven by tunnel.js: fills the viewport (the user
      is fully in darkness by the time this starts), one frame at a time.
-     opacity and transform each get their own 3s transition, so JS can
-     just set target values - fade-in, the click-triggered expand, and
-     fade-out all reuse the same declared durations without needing to
-     rewrite the transition property per phase. */
+     Two stacked img elements (not one reused) so fade-out of the current
+     frame and fade-in of the next can run simultaneously - a real
+     crossfade, no black gap between frames. Not interactive themselves;
+     .tunnel-hotspot is the actual click target. */
   .tunnel-img {
     position: fixed;
     inset: 0;
@@ -225,10 +225,26 @@
     object-fit: cover;
     opacity: 0;
     pointer-events: none;
-    cursor: pointer;
     transform: scale(1);
     transition: opacity 3s ease, transform 3s ease-in;
   }
+
+  /* Small centered click target instead of the whole frame - "click
+     towards the center" (where the light is) rather than anywhere.
+     tunnel.js sets each .tunnel-img's object-position to that frame's
+     own measured light-source coordinates, so the light lands here
+     regardless of which part of the frame object-fit:cover crops to. */
+  .tunnel-hotspot {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vmin; height: 20vmin;
+    border-radius: 50%;
+    z-index: 55;
+    pointer-events: none;
+    cursor: pointer;
+  }
+  .tunnel-hotspot.active { pointer-events: auto; }
 </style>
 </head>
 <body>
@@ -307,7 +323,9 @@
 
 <div class="blackout"></div>
 
-<img class="tunnel-img" alt="" />
+<img class="tunnel-img" id="tunnel-img-a" alt="" />
+<img class="tunnel-img" id="tunnel-img-b" alt="" />
+<div class="tunnel-hotspot" id="tunnel-hotspot"></div>
 
 <script src="ring-hover.js"></script>
 <script src="diag.js"></script>
