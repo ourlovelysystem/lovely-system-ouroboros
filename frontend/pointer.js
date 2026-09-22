@@ -43,19 +43,12 @@
   });
 
   // Once the user is enveloped in darkness, the custom pointer reverts
-  // to normal - the wiggling hand is part of the ring/hole interaction,
-  // not the tunnel sequence that follows.
+  // to normal. Decoupled from whatever happens after (the tunnel now
+  // lives on its own pages) - this page just stays dark until refresh.
   document.addEventListener("enveloped", function () {
     enveloped = true;
     el.style.opacity = "0";
     document.body.style.cursor = "auto";
-  });
-
-  // Returning to the landing page (end of the tunnel sequence) restores
-  // the custom pointer.
-  document.addEventListener("returned", function () {
-    enveloped = false;
-    document.body.style.cursor = "none";
   });
 
   var frame = 1;

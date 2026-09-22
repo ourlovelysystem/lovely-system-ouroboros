@@ -1,0 +1,13 @@
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; width: 100%; height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+#tunnel-img {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
