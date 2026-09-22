@@ -166,20 +166,20 @@
   }
 
   /* Custom animated pointer (hand pinching the mouse's tail, wiggling it).
-     Source frames are 129x192 (2x the 65x96 display size, for retina
-     sharpness); positioned/animated by pointer.js. Hotspot is the hand's
-     pinch point, not the image's top-left or center - measured from the
-     source frames (fixed at x=695,y=118 of 1152x1712 across all 12
-     frames, since the hand is the wiggle's pivot and doesn't move) and
-     scaled to display size: 39px, 7px. */
+     Source frames are 258x384 (2x the 129x192 display size, for retina
+     sharpness); positioned/animated by pointer.js. Hotspot centers on the
+     mouse itself, not the hand - since the mouse swings relative to the
+     fixed hand across the wiggle, this is a per-frame centroid (the
+     mouse's own alpha-weighted center of mass, measured per frame), not
+     one fixed offset. See HOTSPOTS in pointer.js. */
   body { cursor: none; }
   .custom-pointer {
     position: fixed;
     top: 0; left: 0;
     z-index: 30;
     pointer-events: none;
-    width: 65px;
-    height: 96px;
+    width: 129px;
+    height: 192px;
     opacity: 0;
   }
 </style>
