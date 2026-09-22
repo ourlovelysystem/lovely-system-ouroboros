@@ -186,9 +186,30 @@
     transform: translate(-50%, -50%);
     object-fit: contain;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, transform 4s ease-in;
+    cursor: pointer;
   }
   .center:hover .center-strike { opacity: 1; }
+
+  /* Click trigger: strike image grows far past the viewport (scale 15 on
+     a 45vmin-tall base is 675vmin, well over the 100vmin viewport) while
+     a full-viewport black layer fades in over the same 4s - the growth
+     alone can't guarantee true black at the edges (strike.png has a
+     transparent surround), so the blackout layer makes the "envelopes
+     the viewport in blackness" outcome certain rather than incidental. */
+  .center-strike.growing {
+    transform: translate(-50%, -50%) scale(15);
+  }
+  .blackout {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 4s ease-in;
+  }
+  .blackout.active { opacity: 1; }
 </style>
 </head>
 <body>
@@ -265,8 +286,11 @@
 
 <div class="diag" id="diag">last pushed: loading...</div>
 
+<div class="blackout"></div>
+
 <script src="ring-hover.js"></script>
 <script src="diag.js"></script>
 <script src="pointer.js"></script>
+<script src="center-click.js"></script>
 </body>
 </html>
