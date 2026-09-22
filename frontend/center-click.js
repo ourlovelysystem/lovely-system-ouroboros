@@ -13,6 +13,7 @@
     blackout.classList.add("active");
     setTimeout(function () {
       document.dispatchEvent(new CustomEvent("enveloped"));
+      window.location.href = "tunnel-01.html";
     }, ENVELOPE_MS);
   });
 })();
