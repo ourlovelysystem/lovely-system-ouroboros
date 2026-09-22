@@ -94,30 +94,6 @@
   .tile.is-struck .tile-letter { opacity: 0; }
   .tile.is-struck .tile-strike { opacity: 1; }
 
-  /* Center hotspot: fixed position/size, doesn't move or spin -
-     only its contents animate, so hover detection stays put. */
-  /* New asset set (2026-09-20, "New Assets"): every frame shares the
-     exact same 640x720px canvas, unlike the previous set. Measured (via
-     alpha-channel bounding box, not eyeballed) that the character's
-     ground-contact point sits at the same pixel row across every frame
-     checked - strong evidence the whole set already shares one
-     consistent scale, so no per-frame correction like the last asset
-     set needed. width picked to preserve the exact 640:720 ratio at a
-     19vmin height (19 * 640/720 = 16.89vmin). */
-  .center {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 16.89vmin; height: 19vmin;
-    margin: -9.5vmin 0 0 -8.44vmin;
-  }
-
-  .mouse-icon {
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    opacity: 1;
-  }
-
   /* Scurry/escape-on-hover behavior removed 2026-09-20 pending new specs -
      the first-pass version (turn_r_1-4->turn_right at 65ms, then
      scurry_r_a/contact/b at 70ms x3, this .center-strike reveal on a 1.2s/
