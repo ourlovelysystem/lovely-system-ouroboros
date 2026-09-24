@@ -151,16 +151,17 @@
     cursor: pointer;
   }
 
-  /* Venus click target, same vw convention as the others above. Venus
-     measured at 1056,297 (r=75) in the native 1672x941 tunnel_08.png.
-     center-x = 1056/1672 = 63.16vw; center-y = 50% - 10.38vw;
-     diameter = 150/1672 = 8.97vw. Points to an in-page #venus-popup
-     instead of a new page, since this one's a popup, not a
-     navigation. */
+  /* Venus click target, same vw convention as the others above. First
+     pass (1056,297,r=75) was measured off the lit crescent only and
+     missed Venus's darker shadowed limb; re-measured against a
+     brightness-boosted crop to include the full sphere: center
+     1072,320, r=75 in the native 1672x941 tunnel_08.png. Points to an
+     in-page #venus-popup instead of a new page, since this one's a
+     popup, not a navigation. */
   .venus-hotspot {
     position: fixed;
-    left: 58.67vw;
-    top: calc(50% - 14.86vw);
+    left: 59.63vw;
+    top: calc(50% - 13.49vw);
     width: 8.97vw;
     height: 8.97vw;
     border-radius: 50%;
@@ -168,17 +169,17 @@
     cursor: pointer;
   }
 
-  /* Mars click target, same vw convention as the others above. Mars
-     measured at 445,160 (r=58) in the native 1672x941 tunnel_08.png.
-     center-x = 445/1672 = 26.61vw; center-y = 50% - 18.57vw;
-     diameter = 116/1672 = 6.94vw. Also an in-page popup, reusing the
+  /* Mars click target, same vw convention as the others above. First
+     pass (445,160,r=58) had the same shadow-side undercoverage as
+     Venus; re-measured brightness-boosted: center 498,178, r=62 in the
+     native 1672x941 tunnel_08.png. Also an in-page popup, reusing the
      same .popup mechanism as Venus below. */
   .mars-hotspot {
     position: fixed;
-    left: 23.15vw;
-    top: calc(50% - 22.04vw);
-    width: 6.94vw;
-    height: 6.94vw;
+    left: 26.08vw;
+    top: calc(50% - 21.20vw);
+    width: 7.42vw;
+    height: 7.42vw;
     border-radius: 50%;
     z-index: 6;
     cursor: pointer;
