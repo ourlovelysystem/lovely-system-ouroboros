@@ -41,5 +41,5 @@ html, body {
   100% { transform: scale(1.2); }
 }
 #tunnel-img.growing {
-  animation: tunnelGrow 3s ease forwards;
+  animation: tunnelGrow 3s linear forwards;
 }
