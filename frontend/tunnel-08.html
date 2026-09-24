@@ -32,8 +32,7 @@
   .overlay-btn {
     position: fixed;
     bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 24px;
     width: 160px;
     height: 160px;
     display: none;
@@ -48,6 +47,41 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
   }
   #btn1 { display: block; }
+
+  /* sg.png itself, flying in from the lower-left corner and growing to
+     fill a set fraction of the viewport width each click - a second,
+     independent effect layered over the existing overlay-opacity/
+     button-swap mechanic below, not a replacement of it. Square source
+     image, so aspect-ratio:1/1 means width alone also sets height, and
+     top is computed as 50% minus half that height to keep it centered
+     vertically without a transform. */
+  .sg-reveal {
+    position: fixed;
+    width: 10vw;
+    aspect-ratio: 1 / 1;
+    left: -5vw;
+    top: 100%;
+    opacity: 0;
+    z-index: 8;
+    pointer-events: none;
+    transition: left 1s ease, top 1s ease, width 1s ease, opacity 0.4s ease;
+  }
+  #ov1:checked ~ .sg-reveal {
+    opacity: 1;
+    width: 90vw;
+    left: 5vw;
+    top: calc(50% - 45vw);
+  }
+  #ov2:checked ~ .sg-reveal {
+    width: 100vw;
+    left: 0;
+    top: calc(50% - 50vw);
+  }
+  #ov3:checked ~ .sg-reveal {
+    width: 110vw;
+    left: -5vw;
+    top: calc(50% - 55vw);
+  }
 
   #ov1:checked ~ .overlay { opacity: 0.97; }
   #ov1:checked ~ #btn1 { display: none; }
@@ -74,6 +108,7 @@
 <input type="checkbox" id="ov4" class="ov-toggle" />
 
 <div class="overlay"></div>
+<img class="sg-reveal" src="images/tunnel/sg.png" alt="" />
 
 <label for="ov1" class="overlay-btn" id="btn1" aria-label="Sunglasses"><img src="images/tunnel/btn-sunglasses.png" alt="" /></label>
 <label for="ov2" class="overlay-btn" id="btn2" aria-label="Sunglasses"><img src="images/tunnel/btn-sunglasses.png" alt="" /></label>
