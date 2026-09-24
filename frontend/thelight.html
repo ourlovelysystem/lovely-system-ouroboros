@@ -36,36 +36,6 @@
   td.time-col, td.asker-col { color: var(--muted); white-space: nowrap; font-size: 12px; }
   .empty-note { color: var(--muted); font-size: 13px; padding: 8px 0; }
 
-  .auth-banner {
-    background: #fff3e0;
-    border: 1px solid #e65100;
-    color: #7a3900;
-    border-radius: 4px;
-    padding: 10px 14px;
-    font-size: 13px;
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-  }
-  .auth-banner.signed-in {
-    background: #e8f0fe;
-    border-color: var(--primary);
-    color: #0d47a1;
-  }
-  .auth-banner strong { display: block; margin-bottom: 2px; font-size: 14px; }
-  .auth-banner button {
-    background: #fff;
-    border: 1px solid currentColor;
-    color: inherit;
-    border-radius: 4px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-  }
   input[disabled], button.md-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
 </style>
 </head>
@@ -74,8 +44,6 @@
 <main>
   <h1>The Light</h1>
   <div class="subtitle">Yes/no questions about Will Daly's mental health records. The question, the answer, and the asker are visible to the next person who comes along.</div>
-
-  <div class="auth-banner" id="auth-banner"></div>
 
   <div class="card">
     <input type="text" id="question-input" maxlength="300" placeholder="Ask a yes/no question&hellip;" />
@@ -101,30 +69,11 @@
 
 <script src="ols-auth.js"></script>
 <script>
-  function renderAuthBanner(session) {
-    var banner = document.getElementById("auth-banner");
-    var input = document.getElementById("question-input");
-    var btn = document.getElementById("submit-btn");
-    if (session.authenticated_user_id) {
-      banner.className = "auth-banner signed-in";
-      banner.innerHTML =
-        '<div><strong>Signed in</strong>' + session.authenticated_user_id + '</div>' +
-        '<button id="signout-btn">Sign out</button>';
-      document.getElementById("signout-btn").addEventListener("click", window.OLSAuth.signOut);
-      input.disabled = false;
-      btn.disabled = false;
-    } else {
-      banner.className = "auth-banner";
-      banner.innerHTML =
-        '<div><strong>Authentication required</strong>You are not authenticated.</div>' +
-        '<button id="signin-btn">Sign in (Google / Amazon / Apple)</button>';
-      document.getElementById("signin-btn").addEventListener("click", window.OLSAuth.signIn);
-      input.disabled = true;
-      btn.disabled = true;
-    }
-  }
-
-  window.OLSAuth.init(renderAuthBanner);
+  window.OLSAuth.init(function (session) {
+    var isAuthed = !!session.authenticated_user_id;
+    document.getElementById("question-input").disabled = !isAuthed;
+    document.getElementById("submit-btn").disabled = !isAuthed;
+  });
 </script>
 </body>
 </html>

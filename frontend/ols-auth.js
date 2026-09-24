@@ -1,11 +1,12 @@
 (function () {
   "use strict";
 
-  // Same shared cross-app session cookie Touchstone (and home/earn-credits)
-  // use - .ourlovelysystem.org scope means a user already signed in on
-  // another OLS app is picked up here too, no new sign-in required, only
-  // authenticated_user_id/id_token are read from it (nothing else Touchstone
-  // keeps in that cookie - display_name etc - is this page's concern).
+  // Same top session banner Touchstone renders (ols-session-banner.js) -
+  // full-width solid blue bar, Alias/Session/Sign-in fields, inserted as
+  // the page's first element - not a custom-styled inline banner, so this
+  // page actually looks like Touchstone's, not just behaves like it.
+  // Auth-only: the vote gauge, calibration tools, and admin panel from
+  // Touchstone's banner script are Touchstone-specific and left out here.
   var COOKIE_NAME = "ols_session";
   var COOKIE_DOMAIN = ".ourlovelysystem.org";
 
@@ -45,6 +46,39 @@
     writeCookie(session);
   }
 
+  var style = document.createElement("style");
+  style.textContent =
+    ".ols-session-banner{font-family:Roboto,Arial,sans-serif;background:#e65100;color:#ffffff;" +
+    "display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:10px 24px;padding:12px 20px;box-shadow:0 2px 4px rgba(0,0,0,0.3);" +
+    "position:relative;z-index:1000;font-size:13px;line-height:1.6;}" +
+    ".ols-session-banner .ols-field{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:28px;}" +
+    ".ols-session-banner .ols-field.ols-left{justify-content:flex-start;}" +
+    ".ols-session-banner .ols-field.ols-center{justify-content:center;}" +
+    ".ols-session-banner .ols-field.ols-right{justify-content:flex-end;}" +
+    ".ols-session-banner label{opacity:0.85;white-space:nowrap;}" +
+    ".ols-session-banner code{word-break:break-all;background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;}" +
+    ".ols-session-banner input{background:#ffffff;color:#111111;border:none;border-radius:4px;padding:5px 9px;font-size:13px;}" +
+    ".ols-session-banner button{background:#ffffff;color:#e65100;border:none;border-radius:4px;padding:5px 12px;" +
+    "font-size:13px;cursor:pointer;font-weight:500;white-space:nowrap;}";
+  document.head.appendChild(style);
+
+  var banner = document.createElement("div");
+  banner.className = "ols-session-banner";
+  banner.innerHTML =
+    '<div class="ols-field ols-left"><label>Alias</label>' +
+    '<input id="ols-name-input" type="text" maxlength="80" placeholder="alias (optional)" value="' +
+    (session.display_name || "").replace(/"/g, "&quot;") + '"/>' +
+    '<button id="ols-name-submit">Update</button></div>' +
+    '<div class="ols-field ols-center"><label>Session</label>' +
+    '<code id="ols-session-id">' + session.session_id + "</code></div>" +
+    '<div class="ols-field ols-right" id="ols-auth-field"></div>';
+  document.body.insertBefore(banner, document.body.firstChild);
+
+  document.getElementById("ols-name-submit").addEventListener("click", function () {
+    session.display_name = document.getElementById("ols-name-input").value.slice(0, 80);
+    writeCookie(session);
+  });
+
   function signIn() {
     var verifierBytes = crypto.getRandomValues(new Uint8Array(32));
     var codeVerifier = base64url(verifierBytes);
@@ -79,7 +113,21 @@
     return JSON.parse(atob(payload));
   }
 
-  function exchangeCodeForToken(code, onDone) {
+  function renderAuthField(onChange) {
+    var field = document.getElementById("ols-auth-field");
+    if (session.authenticated_user_id) {
+      field.innerHTML =
+        '<label>Signed in</label><code>' + session.authenticated_user_id + "</code>" +
+        '<button id="ols-signout-btn">Sign out</button>';
+      document.getElementById("ols-signout-btn").addEventListener("click", signOut);
+    } else {
+      field.innerHTML = '<button id="ols-signin-btn">Sign in (Google / Amazon / Apple)</button>';
+      document.getElementById("ols-signin-btn").addEventListener("click", signIn);
+    }
+    if (onChange) onChange(session);
+  }
+
+  function exchangeCodeForToken(code, onChange) {
     var codeVerifier = sessionStorage.getItem("ols_pkce_verifier");
     if (!codeVerifier) return;
     var body = new URLSearchParams({
@@ -101,9 +149,9 @@
         session.authenticated_user_id = claims.email || claims.sub;
         session.id_token = tokens.id_token;
         writeCookie(session);
+        renderAuthField(onChange);
         var cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
-        if (onDone) onDone();
       });
   }
 
@@ -111,19 +159,20 @@
     getSession: function () {
       return {
         session_id: session.session_id,
+        display_name: session.display_name,
         authenticated_user_id: session.authenticated_user_id,
       };
     },
     signIn: signIn,
     signOut: signOut,
-    // Call once on page load; invokes callback (with the up-to-date
-    // session) once any pending OAuth redirect has been resolved.
-    init: function (callback) {
+    // Renders the banner's auth field and calls back with the current
+    // session once any pending OAuth redirect has been resolved.
+    init: function (onChange) {
       var urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("code")) {
-        exchangeCodeForToken(urlParams.get("code"), function () { callback(session); });
+        exchangeCodeForToken(urlParams.get("code"), onChange);
       } else {
-        callback(session);
+        renderAuthField(onChange);
       }
     },
   };
