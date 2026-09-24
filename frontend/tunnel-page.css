@@ -31,3 +31,16 @@ html, body {
   z-index: 10;
 }
 .tunnel-next:hover { background: rgba(255, 255, 255, 0.22); }
+
+/* Click-to-transition pages: same image, grows 20% and fades out over 3s,
+   pure CSS animation (starts automatically on page load - the click that
+   got here already happened). Paired with a meta-refresh in the page
+   itself for the delayed redirect to the next real page - no JS. */
+@keyframes tunnelGrow {
+  0%   { transform: scale(1);   opacity: 1; }
+  85%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1.2); opacity: 0; }
+}
+#tunnel-img.growing {
+  animation: tunnelGrow 3s ease forwards;
+}
