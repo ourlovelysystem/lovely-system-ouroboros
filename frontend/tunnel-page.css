@@ -33,13 +33,13 @@ html, body {
 }
 .tunnel-next:hover { background: rgba(0, 0, 0, 0.85); }
 
-/* Click-to-transition pages: same image, grows 20% over the full 3s, no
+/* Click-to-transition pages: same image, grows 20% over the full 2s, no
    fade - opacity stays at 1 the whole time, then the meta-refresh (also
-   3s) cuts straight to the next page the instant the grow finishes. */
+   2s) cuts straight to the next page the instant the grow finishes. */
 @keyframes tunnelGrow {
   0%   { transform: scale(1); }
   100% { transform: scale(1.2); }
 }
 #tunnel-img.growing {
-  animation: tunnelGrow 3s linear forwards;
+  animation: tunnelGrow 2s linear forwards;
 }
