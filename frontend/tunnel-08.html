@@ -36,7 +36,7 @@
     width: 160px;
     height: 160px;
     display: none;
-    z-index: 10;
+    z-index: 20;
     cursor: pointer;
   }
   .overlay-btn img {
@@ -48,39 +48,45 @@
   }
   #btn1 { display: block; }
 
-  /* sg.png itself, flying in from the lower-left corner and growing to
-     fill a set fraction of the viewport width each click - a second,
-     independent effect layered over the existing overlay-opacity/
-     button-swap mechanic below, not a replacement of it. Square source
-     image, so aspect-ratio:1/1 means width alone also sets height, and
-     top is computed as 50% minus half that height to keep it centered
-     vertically without a transform. */
-  .sg-reveal {
+  /* Three separate sg.png layers, one per click - each flies in from the
+     lower-left corner and grows on ITS OWN trigger, then stays put (its
+     checkbox never unchecks), so earlier layers remain visible under
+     later ones. A small per-layer left/top offset on top of the
+     centered target position is what makes the stack read as multiple
+     slightly-misaligned pairs of glasses rather than one pair snapping
+     to a new size. Square source image, so aspect-ratio:1/1 means width
+     alone also sets height. */
+  .sg-layer {
     position: fixed;
     width: 10vw;
     aspect-ratio: 1 / 1;
     left: -5vw;
     top: 100%;
     opacity: 0;
-    z-index: 8;
     pointer-events: none;
     transition: left 1s ease, top 1s ease, width 1s ease, opacity 0.4s ease;
   }
-  #ov1:checked ~ .sg-reveal {
+  .sg-layer-1 { z-index: 8; }
+  .sg-layer-2 { z-index: 9; }
+  .sg-layer-3 { z-index: 10; }
+
+  #ov1:checked ~ .sg-layer-1 {
     opacity: 1;
     width: 90vw;
     left: 5vw;
     top: calc(50% - 45vw);
   }
-  #ov2:checked ~ .sg-reveal {
+  #ov2:checked ~ .sg-layer-2 {
+    opacity: 1;
     width: 100vw;
-    left: 0;
-    top: calc(50% - 50vw);
+    left: 2vw;
+    top: calc(50% - 49vw);
   }
-  #ov3:checked ~ .sg-reveal {
+  #ov3:checked ~ .sg-layer-3 {
+    opacity: 1;
     width: 110vw;
-    left: -5vw;
-    top: calc(50% - 55vw);
+    left: -7vw;
+    top: calc(50% - 53vw);
   }
 
   #ov1:checked ~ .overlay { opacity: 0.97; }
@@ -108,7 +114,9 @@
 <input type="checkbox" id="ov4" class="ov-toggle" />
 
 <div class="overlay"></div>
-<img class="sg-reveal" src="images/tunnel/sg.png" alt="" />
+<img class="sg-layer sg-layer-1" src="images/tunnel/sg.png" alt="" />
+<img class="sg-layer sg-layer-2" src="images/tunnel/sg.png" alt="" />
+<img class="sg-layer sg-layer-3" src="images/tunnel/sg.png" alt="" />
 
 <label for="ov1" class="overlay-btn" id="btn1" aria-label="Sunglasses"><img src="images/tunnel/btn-sunglasses.png" alt="" /></label>
 <label for="ov2" class="overlay-btn" id="btn2" aria-label="Sunglasses"><img src="images/tunnel/btn-sunglasses.png" alt="" /></label>
