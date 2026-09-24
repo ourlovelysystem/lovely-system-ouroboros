@@ -48,17 +48,17 @@
 
   var style = document.createElement("style");
   style.textContent =
-    ".ols-session-banner{font-family:Roboto,Arial,sans-serif;background:#e65100;color:#ffffff;" +
+    ".ols-session-banner{font-family:Roboto,Arial,sans-serif;background:#ffc107;color:#3e2723;" +
     "display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:10px 24px;padding:12px 20px;box-shadow:0 2px 4px rgba(0,0,0,0.3);" +
     "position:relative;z-index:1000;font-size:13px;line-height:1.6;}" +
     ".ols-session-banner .ols-field{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:28px;}" +
     ".ols-session-banner .ols-field.ols-left{justify-content:flex-start;}" +
     ".ols-session-banner .ols-field.ols-center{justify-content:center;}" +
     ".ols-session-banner .ols-field.ols-right{justify-content:flex-end;}" +
-    ".ols-session-banner label{opacity:0.85;white-space:nowrap;}" +
-    ".ols-session-banner code{word-break:break-all;background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;}" +
+    ".ols-session-banner label{opacity:0.75;white-space:nowrap;}" +
+    ".ols-session-banner code{word-break:break-all;background:rgba(0,0,0,0.12);padding:2px 6px;border-radius:3px;}" +
     ".ols-session-banner input{background:#ffffff;color:#111111;border:none;border-radius:4px;padding:5px 9px;font-size:13px;}" +
-    ".ols-session-banner button{background:#ffffff;color:#e65100;border:none;border-radius:4px;padding:5px 12px;" +
+    ".ols-session-banner button{background:#3e2723;color:#ffc107;border:none;border-radius:4px;padding:5px 12px;" +
     "font-size:13px;cursor:pointer;font-weight:500;white-space:nowrap;}";
   document.head.appendChild(style);
 
