@@ -150,12 +150,124 @@
     z-index: 6;
     cursor: pointer;
   }
+
+  /* Venus click target, same vw convention as the others above. Venus
+     measured at 1056,297 (r=75) in the native 1672x941 tunnel_08.png.
+     center-x = 1056/1672 = 63.16vw; center-y = 50% - 10.38vw;
+     diameter = 150/1672 = 8.97vw. Points to an in-page #venus-popup
+     instead of a new page, since this one's a popup, not a
+     navigation. */
+  .venus-hotspot {
+    position: fixed;
+    left: 58.67vw;
+    top: calc(50% - 14.86vw);
+    width: 8.97vw;
+    height: 8.97vw;
+    border-radius: 50%;
+    z-index: 6;
+    cursor: pointer;
+  }
+
+  /* Mars click target, same vw convention as the others above. Mars
+     measured at 445,160 (r=58) in the native 1672x941 tunnel_08.png.
+     center-x = 445/1672 = 26.61vw; center-y = 50% - 18.57vw;
+     diameter = 116/1672 = 6.94vw. Also an in-page popup, reusing the
+     same .popup mechanism as Venus below. */
+  .mars-hotspot {
+    position: fixed;
+    left: 23.15vw;
+    top: calc(50% - 22.04vw);
+    width: 6.94vw;
+    height: 6.94vw;
+    border-radius: 50%;
+    z-index: 6;
+    cursor: pointer;
+  }
+
+  /* Mercury click target, same vw convention as the others above.
+     Mercury measured at 610,420 (r=46) in the native 1672x941
+     tunnel_08.png. center-x = 610/1672 = 36.48vw; center-y = 50% -
+     3.02vw; diameter = 92/1672 = 5.50vw. Also an in-page popup. */
+  .mercury-hotspot {
+    position: fixed;
+    left: 33.73vw;
+    top: calc(50% - 5.77vw);
+    width: 5.50vw;
+    height: 5.50vw;
+    border-radius: 50%;
+    z-index: 6;
+    cursor: pointer;
+  }
+
+  /* CSS-only popup/lightbox: no JS needed since :target does the
+     showing and hiding. The backdrop is itself a link back to the
+     bare page (href="#"), painted first so the image and close button
+     (added later in the DOM) sit on top of it and don't trigger a
+     close - clicking anywhere else on the dark backdrop does. Shared
+     .popup class so any number of these can reuse the same styling;
+     each instance still needs its own id for :target to address it. */
+  .popup {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+  }
+  #venus-popup:target, #mars-popup:target, #mercury-popup:target { display: block; }
+  .popup-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+  }
+  .popup-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+  }
+  .popup-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    color: #fff;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 <img id="tunnel-img" src="images/tunnel/tunnel_08.png" alt="" />
 <a class="earth-hotspot" href="ahhh.html" aria-label="Earth"></a>
 <a class="sun-hotspot" href="garden.html" aria-label="The Sun"></a>
+<a class="venus-hotspot" href="#venus-popup" aria-label="Venus"></a>
+<a class="mars-hotspot" href="#mars-popup" aria-label="Mars"></a>
+<a class="mercury-hotspot" href="#mercury-popup" aria-label="Mercury"></a>
+
+<div id="venus-popup" class="popup">
+  <a class="popup-backdrop" href="#" aria-label="Close"></a>
+  <img class="popup-img" src="images/tunnel/venus-birth.jpg" alt="The Birth of Venus, Sandro Botticelli" />
+  <a class="popup-close" href="#" aria-label="Close">&times;</a>
+</div>
+<div id="mercury-popup" class="popup">
+  <a class="popup-backdrop" href="#" aria-label="Close"></a>
+  <img class="popup-img" src="images/tunnel/mercury-battle.jpg" alt="The Battle of Love and Chastity, Pietro Perugino" />
+  <a class="popup-close" href="#" aria-label="Close">&times;</a>
+</div>
+<div id="mars-popup" class="popup">
+  <a class="popup-backdrop" href="#" aria-label="Close"></a>
+  <img class="popup-img" src="images/tunnel/venus-and-mars.jpg" alt="Venus and Mars, Sandro Botticelli" />
+  <a class="popup-close" href="#" aria-label="Close">&times;</a>
+</div>
 
 <input type="checkbox" id="ov1" class="ov-toggle" />
 <input type="checkbox" id="ov2" class="ov-toggle" />
