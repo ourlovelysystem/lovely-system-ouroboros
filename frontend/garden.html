@@ -7,26 +7,52 @@
 <style>
   * { box-sizing: border-box; }
   html, body {
-    margin: 0; width: 100%; height: 100%;
+    margin: 0; width: 100%; min-height: 100%;
     background: #0b0906;
-    overflow: hidden;
   }
   body {
     display: flex; align-items: center; justify-content: center;
     font-family: Georgia, 'Times New Roman', serif;
     color: #fff;
+    padding: 48px 24px;
+  }
+  .garden {
+    max-width: 640px;
+    text-align: center;
   }
   h1 {
     font-size: 48px;
     font-weight: normal;
     letter-spacing: 1px;
-    text-align: center;
-    margin: 0;
-    padding: 0 24px;
+    margin: 0 0 32px;
+  }
+  p {
+    font-size: 20px;
+    line-height: 1.6;
+    margin: 0 0 24px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .verse {
+    font-style: italic;
+    margin-top: 40px;
+  }
+  .verse cite {
+    display: block;
+    margin-top: 12px;
+    font-style: normal;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.65);
   }
 </style>
 </head>
 <body>
-<h1>Welcome to the Garden</h1>
+<div class="garden">
+  <h1>Welcome to the Garden</h1>
+  <p>Beyond this gate you will find access to Will Daly's mental health records.</p>
+  <p>For my protection I will require authentication. I wish I didn't have to. Maybe someday.</p>
+  <p>You will be able to ask yes/no questions. The questions, the answers, and the asker will be visible to the next person who comes along.</p>
+  <p>I believe that privacy is a curse, not a blessing, and it covers up a lot of sins.</p>
+  <p class="verse">"Everyone who does evil hates the light, and will not come into the light for fear that their deeds will be exposed."<cite>&mdash;John 3:20</cite></p>
+</div>
 </body>
 </html>
