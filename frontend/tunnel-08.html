@@ -135,11 +135,27 @@
     z-index: 6;
     cursor: pointer;
   }
+
+  /* Sun click target, same vw convention as .earth-hotspot above.
+     Sun's bright disc measured at 850,430 (r=155) in the native
+     1672x941 tunnel_08.png. center-x = 850/1672 = 50.84vw;
+     center-y = 50% - 2.42vw; diameter = 310/1672 = 18.54vw. */
+  .sun-hotspot {
+    position: fixed;
+    left: 41.57vw;
+    top: calc(50% - 11.69vw);
+    width: 18.54vw;
+    height: 18.54vw;
+    border-radius: 50%;
+    z-index: 6;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 <img id="tunnel-img" src="images/tunnel/tunnel_08.png" alt="" />
 <a class="earth-hotspot" href="ahhh.html" aria-label="Earth"></a>
+<a class="sun-hotspot" href="garden.html" aria-label="The Sun"></a>
 
 <input type="checkbox" id="ov1" class="ov-toggle" />
 <input type="checkbox" id="ov2" class="ov-toggle" />
