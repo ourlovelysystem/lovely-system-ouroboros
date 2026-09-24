@@ -43,3 +43,28 @@ html, body {
 #tunnel-img.growing {
   animation: tunnelGrow 2s linear forwards;
 }
+
+/* Shared text-label button (e.g. "AHHHHHH!") for the post-tunnel
+   reaction-image chain - same dark/bordered look as .tunnel-next, sized
+   for a word instead of a single arrow glyph. */
+.scream-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 16px 32px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-align: center;
+  z-index: 10;
+  cursor: pointer;
+}
+.scream-btn:hover { background: rgba(0, 0, 0, 0.85); }

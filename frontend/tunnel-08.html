@@ -112,10 +112,34 @@
   #ov4:checked ~ .sg-layer-1 { top: 130vh; opacity: 0; transition-delay: 0s; }
   #ov4:checked ~ .sg-layer-2 { top: 130vh; opacity: 0; transition-delay: 0.15s; }
   #ov4:checked ~ .sg-layer-3 { top: 130vh; opacity: 0; transition-delay: 0.3s; }
+
+  /* Earth click target. NOT an image map: <area> coords are raw CSS
+     pixels from the image's rendered box, not scaled to the box's size
+     - confirmed by testing, so a map would misalign on any viewport
+     that isn't exactly 1672x941. Instead this is a plain circle
+     positioned in vw, same convention as .sg-layer's calc(50% - Nvw)
+     above - assumes a ~16:9 viewport, matching every other position
+     computed for this tunnel sequence. Earth center measured at
+     1146,658 (r=85) in the native 1672x941 tunnel_08.png.
+     center-x = 1146/1672 = 68.54vw; center-y = 50% + 11.21vw (image
+     content height at 16:9 is ~56.28vw, so content top sits at
+     50% - 28.14vw, plus 658/941 of that height down to Earth);
+     diameter = 170/1672 = 10.17vw. */
+  .earth-hotspot {
+    position: fixed;
+    left: 63.46vw;
+    top: calc(50% + 6.13vw);
+    width: 10.17vw;
+    height: 10.17vw;
+    border-radius: 50%;
+    z-index: 6;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 <img id="tunnel-img" src="images/tunnel/tunnel_08.png" alt="" />
+<a class="earth-hotspot" href="ahhh.html" aria-label="Earth"></a>
 
 <input type="checkbox" id="ov1" class="ov-toggle" />
 <input type="checkbox" id="ov2" class="ov-toggle" />
