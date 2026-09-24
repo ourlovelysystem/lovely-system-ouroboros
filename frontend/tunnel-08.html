@@ -103,6 +103,15 @@
 
   #ov4:checked ~ .overlay { opacity: 0; }
   #ov4:checked ~ #btn4 { display: none; }
+
+  /* Welder's helmet click: all three glasses layers drop off the bottom
+     of the screen and fade, staggered slightly per layer so they don't
+     fall in lockstep. Only top/opacity change here - width/left stay at
+     whatever each layer already reached, so they fall as themselves,
+     not shrinking away. */
+  #ov4:checked ~ .sg-layer-1 { top: 130vh; opacity: 0; transition-delay: 0s; }
+  #ov4:checked ~ .sg-layer-2 { top: 130vh; opacity: 0; transition-delay: 0.15s; }
+  #ov4:checked ~ .sg-layer-3 { top: 130vh; opacity: 0; transition-delay: 0.3s; }
 </style>
 </head>
 <body>
