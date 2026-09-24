@@ -205,28 +205,53 @@
      (added later in the DOM) sit on top of it and don't trigger a
      close - clicking anywhere else on the dark backdrop does. Shared
      .popup class so any number of these can reuse the same styling;
-     each instance still needs its own id for :target to address it. */
+     each instance still needs its own id for :target to address it.
+
+     Rollout-like-a-scroll open: .popup-img scales from 0 height up to
+     full, pivoting from its own top edge (transform-origin: top), so
+     it reads as unrolling downward rather than just growing from the
+     center. visibility is what actually shows/hides the popup (so a
+     hidden one doesn't block clicks on the planets); it's delayed 0.5s
+     on the way OUT (transition-delay only applies going hidden->
+     nothing overrides it on :target, which resets the delay to 0) so
+     the closing shrink-back animation has time to play before the
+     popup disappears, instead of just vanishing. */
   .popup {
     position: fixed;
     inset: 0;
     z-index: 50;
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    transition: visibility 0s linear 0.6s;
   }
-  #venus-popup:target, #mars-popup:target, #mercury-popup:target { display: block; }
+  #venus-popup:target, #mars-popup:target, #mercury-popup:target {
+    visibility: visible;
+    transition-delay: 0s;
+  }
   .popup-backdrop {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.85);
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
+  #venus-popup:target .popup-backdrop,
+  #mars-popup:target .popup-backdrop,
+  #mercury-popup:target .popup-backdrop { opacity: 1; }
   .popup-img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     max-width: 90vw;
     max-height: 90vh;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 0.6s ease;
   }
+  #venus-popup:target .popup-img,
+  #mars-popup:target .popup-img,
+  #mercury-popup:target .popup-img { transform: scaleY(1); }
   .popup-close {
     position: absolute;
     top: 24px;
@@ -242,7 +267,12 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
+  #venus-popup:target .popup-close,
+  #mars-popup:target .popup-close,
+  #mercury-popup:target .popup-close { opacity: 1; }
 </style>
 </head>
 <body>
