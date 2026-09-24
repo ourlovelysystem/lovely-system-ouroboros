@@ -5,8 +5,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ouroboros — Tunnel 8</title>
 <link rel="stylesheet" href="tunnel-page.css" />
+<style>
+  /* Forward-only 4-state reveal, no JavaScript: each checkbox's own label
+     is its visible button. Checking it via a click both drives the
+     overlay opacity and hides itself (display:none removes it from hit
+     testing), so it can never be unchecked again - matches the
+     one-way, no-back-without-refresh pattern used elsewhere in this app.
+     Source order matters: all four checkboxes must precede .overlay and
+     the four button labels for the ~ sibling combinator to reach them,
+     and rules are written ov1->ov4 so later checks win the cascade when
+     multiple boxes end up checked at once. */
+  .ov-toggle { display: none; }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background-image: url('images/tunnel/overlay-radial.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 5;
+  }
+
+  .overlay-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 64px;
+    display: none;
+    z-index: 10;
+    cursor: pointer;
+  }
+  .overlay-btn img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+  #btn1 { display: block; }
+
+  #ov1:checked ~ .overlay { opacity: 0.9; }
+  #ov1:checked ~ #btn1 { display: none; }
+  #ov1:checked ~ #btn2 { display: block; }
+
+  #ov2:checked ~ .overlay { opacity: 0.8; }
+  #ov2:checked ~ #btn2 { display: none; }
+  #ov2:checked ~ #btn3 { display: block; }
+
+  #ov3:checked ~ .overlay { opacity: 0.7; }
+  #ov3:checked ~ #btn3 { display: none; }
+  #ov3:checked ~ #btn4 { display: block; }
+
+  #ov4:checked ~ .overlay { opacity: 0; }
+  #ov4:checked ~ #btn4 { display: none; }
+</style>
 </head>
 <body>
 <img id="tunnel-img" src="images/tunnel/tunnel_08.png" alt="" />
+
+<input type="checkbox" id="ov1" class="ov-toggle" />
+<input type="checkbox" id="ov2" class="ov-toggle" />
+<input type="checkbox" id="ov3" class="ov-toggle" />
+<input type="checkbox" id="ov4" class="ov-toggle" />
+
+<div class="overlay"></div>
+
+<label for="ov1" class="overlay-btn" id="btn1" aria-label="Sunglasses"><img src="images/tunnel/btn-sunglasses.png" alt="" /></label>
+<label for="ov2" class="overlay-btn" id="btn2" aria-label="Sunglasses"><img src="images/tunnel/btn-sunglasses.png" alt="" /></label>
+<label for="ov3" class="overlay-btn" id="btn3" aria-label="Sunglasses"><img src="images/tunnel/btn-sunglasses.png" alt="" /></label>
+<label for="ov4" class="overlay-btn" id="btn4" aria-label="Welder's helmet"><img src="images/tunnel/btn-welder.png" alt="" /></label>
 </body>
 </html>
