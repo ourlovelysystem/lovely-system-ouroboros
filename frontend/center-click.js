@@ -6,7 +6,7 @@
   var blackout = document.querySelector(".blackout");
   if (!center || !strike || !blackout) return;
 
-  var ENVELOPE_MS = 2000; // matches the growing/blackout transition duration
+  var ENVELOPE_MS = 1500; // matches the growing/blackout transition duration
 
   center.addEventListener("click", function () {
     strike.classList.add("growing");

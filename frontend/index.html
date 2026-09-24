@@ -186,14 +186,14 @@
     transform: translate(-50%, -50%);
     object-fit: contain;
     opacity: 0;
-    transition: opacity 0.2s ease, transform 2s linear;
+    transition: opacity 0.2s ease, transform 1.5s ease-in;
     cursor: pointer;
   }
   .center:hover .center-strike { opacity: 1; }
 
   /* Click trigger: strike image grows far past the viewport (scale 15 on
      a 45vmin-tall base is 675vmin, well over the 100vmin viewport) while
-     a full-viewport black layer fades in over the same 2s - the growth
+     a full-viewport black layer fades in over the same 1.5s - the growth
      alone can't guarantee true black at the edges (strike.png has a
      transparent surround), so the blackout layer makes the "envelopes
      the viewport in blackness" outcome certain rather than incidental. */
@@ -207,7 +207,7 @@
     background: #000;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 2s ease-in;
+    transition: opacity 1.5s ease-in;
   }
   .blackout.active { opacity: 1; }
 </style>
